@@ -47,7 +47,8 @@
     {%* css 编译产物标记 *%}
     {%block name="__head_asset"%}{%/block%}
 </head>
-<body ontouchstart="">
+
+<body>
     {%block name="body"%}<div id="app"></div>{%/block%}
 
     {%* js 编译产物标记 *%}

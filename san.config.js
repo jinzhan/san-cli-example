@@ -8,6 +8,7 @@
  */
 
 const path = require('path');
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 
 // 静态文件域名
 const CDN = 'https://s.bdstatic.com/';
@@ -87,7 +88,6 @@ module.exports = {
     },
     chainWebpack: config => {
         // 这里可以用来扩展 webpack 的配置，使用的是 webpack-chain 语法
-
         // config.module.rule('img')
         //     .test(/\.(png|jpe?g|gif)(\?.*)?$/)
         //     .use('url-loader').loader(require.resolve('url-loader'))
@@ -96,6 +96,19 @@ module.exports = {
         //         name: STATIC_PRO + '/img/[name].[hash:7].[ext]',
         //         publicPath: isProduction ? CDN : ''
         //     });
+
+        config.plugin('inline-source-plugin')
+            .use(HtmlWebpackInlineSourcePlugin);
+
+        config.plugin('html-index')
+            .tap(args => {
+                Object.assign(args[0], {
+                    inject: 'body',
+                    inlineSource: '.(js|css)$'
+                });
+                // console.log({args});
+                return args;
+            });
     },
     sourceMap: isProduction
 };
