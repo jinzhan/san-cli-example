@@ -4,7 +4,6 @@
  */
 
 import {Component} from 'san';
-import './app.less';
 import Charts from '../components/charts/index';
 import buildHierarchy from '../components/charts/lib/buildHierarchy';
 import {getBundleDetails} from '../components/charts/util/stat-utils';

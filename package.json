@@ -1,12 +1,11 @@
 {
-  "name": "san-cli-examples",
+  "name": "san-plugin-visualizer",
   "version": "1.0.0",
   "private": true,
   "description": "A San project",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cross-env NODE_ENV=development san serve --config san.config.js",
-    "build": "cross-env NODE_ENV=production san build --config san.config.js",
+    "build": "cross-env NODE_ENV=production san build --config san.config.js --stats",
     "analyzer": "cross-env NODE_ENV=production san build --config san.config.js --analyze",
     "build:modern": "cross-env NODE_ENV=production san build --config san.config.js --modern"
   },
@@ -50,6 +49,7 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "d3": "^3.5.6",
     "html-webpack-inline-source-plugin": "^0.0.10",
     "san": "^3.8.1",
     "san-store": "1.1.0",
