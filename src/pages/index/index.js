@@ -1,9 +1,10 @@
+/* eslint-disable import/no-unresolved */
 
 /**
  * @file index
  */
 
-import App from '@/lib/App';
+import app from '@/lib/App';
 import AppComponent from './containers/app';
 
-App(AppComponent, '#app');
+app(AppComponent, '#app');
