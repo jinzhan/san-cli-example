@@ -8,12 +8,12 @@
  */
 
 const path = require('path');
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+// const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 
 // 静态文件域名
 const CDN = 'https://s.bdstatic.com/';
 // 生产环境下的静态目录
-const STATIC_PRO = 'static/san-cli-examples';
+const STATIC_PRO = 'static';
 
 // 生产环境下模板目录
 const resolve = pathname => path.resolve(__dirname, pathname);
@@ -29,22 +29,11 @@ module.exports = {
     // 文件名是否 hash
     filenameHashing: isProduction,
     // 这里实际是 webpack copy plugin
-    // 多路径可以使用数组
-    copy: {
-        from: 'template',
-        to: 'template'
-    },
     // 这是多页面配置
     pages: {
         // 这里是多页打包配置
         index: {
-            entry: './src/pages/index/index.js',
-            template: './template/index/index.tpl',
-            // 访问路径 localhost:{port}/template/index/index.tpl
-            // 这里 {output}/template 目录会被 hulk-mock-server 接管
-            // 其他路径不会走 smarty 渲染，所以访问 tpl 文件会出现下载文件
-            // 更换router路径，参考 hulk-mock-server 配置
-            filename: 'template/index/index.tpl'
+            entry: './src/pages/index/index.js'
         }
     },
     // 默认node_modules的依赖是不过 babel 的
@@ -68,18 +57,6 @@ module.exports = {
             }
         }
     },
-    plugins: [{
-        id: 'hulk-mock-server',
-        apply(api) {
-            // 这里使用接管了{output}/template 路径
-            // 详细 hulk mock server 配置说明：https://www.npmjs.com/package/hulk-mock-server
-            api.middleware(() => require('hulk-mock-server')({
-                contentBase: path.join(__dirname, './' + outputDir + '/'),
-                rootDir: path.join(__dirname, './mock'),
-                processors: [`smarty?router=/template/*&baseDir=${path.join(__dirname, `./${outputDir}/template`)}&dataDir=${path.join(__dirname, './mock/_data_')}`] // eslint-disable-line
-            }));
-        }
-    }],
     alias: {
         '@assets': resolve('src/assets'),
         '@components': resolve('src/components'),
@@ -97,18 +74,18 @@ module.exports = {
         //         publicPath: isProduction ? CDN : ''
         //     });
 
-        config.plugin('inline-source-plugin')
-            .use(HtmlWebpackInlineSourcePlugin);
+        // config.plugin('inline-source-plugin')
+        //     .use(HtmlWebpackInlineSourcePlugin);
 
-        config.plugin('html-index')
-            .tap(args => {
-                Object.assign(args[0], {
-                    inject: 'body',
-                    inlineSource: '.(js|css)$'
-                });
-                // console.log({args});
-                return args;
-            });
+        // config.plugin('html-index')
+        //     .tap(args => {
+        //         Object.assign(args[0], {
+        //             inject: 'body',
+        //             inlineSource: '.(js|css)$'
+        //         });
+        //         // console.log({args});
+        //         return args;
+        //     });
     },
     sourceMap: isProduction
 };
