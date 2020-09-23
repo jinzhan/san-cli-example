@@ -40,6 +40,7 @@ export default function buildHierarchy(modules) {
 
     root.maxDepth = maxDepth;
 
+    console.log({root});
     return root;
 }
 

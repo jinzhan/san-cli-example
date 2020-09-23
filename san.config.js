@@ -33,7 +33,7 @@ module.exports = {
     pages: {
         // 这里是多页打包配置
         index: {
-            entry: './src/pages/index/index.js'
+            entry: './src/index'
         }
     },
     // 默认node_modules的依赖是不过 babel 的

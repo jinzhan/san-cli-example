@@ -2,9 +2,7 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "@/*": ["src/*"],
-            "@app": ["src/lib/App.js"],
-            "@store": ["src/lib/Store.js"]
+            "@app": ["src/lib/App.js"]
         }
     }
 }
