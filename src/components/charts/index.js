@@ -1,69 +1,88 @@
 import {Component} from 'san';
-import Chart from './chart';
-import ChartDetails from './details';
-import Breadcrumbs from './breadcrumbs';
+import ChartWithDetails from './chart-with-details';
+import buildHierarchy from './lib/buildHierarchy';
+import {getAssetsData, getBundleDetails} from './util/stat-utils';
+import formatSize from './util/formatSize';
 import './style.css';
-
 
 export default class App extends Component {
     static template = /* html */`
         <div class="{{chartAreaClass}}" s-if="!disabled">
-            <c-char-details
+            <fragment s-if="assetsData && assetsData.length">
+                <select on-change="onAssetChange" value="{{selectedAssetIndex}}">
+                    <option value="0">All Chunks</option>
+                    <option s-for="asset,index in assetsData" key="{{index}}" value="{{index + 1}}">
+                        {{asset.name}} ({{formatSize(asset.size)}})
+                    </option>
+                </select>
+            </fragment>
+            <c-char-width-details 
+                chartData="{{chartData}}" 
                 bundleDetails="{{bundleDetails}}"
-                details="{{hoverDetails}}"
-                topMargin="0"
             />
-            <c-chart
-                data="{{chartData}}"
-                on-hover="onChartHover"
-                on-unhover="onChartUnhover"
-                on-render="onChartRender"
-            />
-            <c-breadcrumbs nodes="{{breadcrumbNodes}}" />
         </div>
     `;
 
     static components = {
-        'c-chart': Chart,
-        'c-char-details': ChartDetails,
-        'c-breadcrumbs': Breadcrumbs
+        'c-char-width-details': ChartWithDetails
     };
 
     initData() {
         return {
-            disabled: false,
-            breadcrumbNodes: [],
-            hoverDetails: null,
-            paddingDiff: 0
+            selectedAssetIndex: 0
         };
     }
 
-    onChartHover(details) {
-        this.data.set('hoverDetails', details);
-
-        this.data.set('breadcrumbNodes', details.ancestorArray);
+    attached() {
+        this.formatData(this.data.get('data'));
+        this.watch('data', data => {
+            this.formatData(data);
+        });
     }
 
-    onChartUnhover() {
-        this.data.set('hoverDetails', null);
-        this.data.set('breadcrumbNodes', []);
+    formatData({assets, chunks, modules}) {
+        const chartData = buildHierarchy(modules);
+
+        const assetsData = getAssetsData(assets, chunks);
+
+        const bundleDetails = getBundleDetails({
+            assets: assetsData,
+            selectedAssetIndex: this.data.get('selectedAssetIndex')
+        });
+
+        this.data.set('bundleDetails', bundleDetails);
+        this.data.set('chartData', chartData);
+        this.data.set('assetsData', assetsData);
     }
 
-    onChartRender(details) {
-        this.data.set('paddingDiff', details.removedTopPadding);
+    formatSize(size) {
+        return formatSize(size);
     }
 
-    updated() {
-        let chartAreaClass = 'chart';
-        const {chartData, bundleDetails} = this.data.get();
-        if (chartData && chartData.maxDepth > 9) {
-            chartAreaClass += ' chart--large';
+    onAssetChange(e) {
+        const selectedAssetIndex = Number(e.target.value);
+        let modules = [];
+        let chartData = {};
+
+        if (selectedAssetIndex === 0) {
+            modules = this.data.get('data.modules');
+        }
+        else {
+            const asset = this.data.get('assetsData')[selectedAssetIndex - 1];
+            modules = asset.chunk.modules;
         }
 
-        this.data.set('chartAreaClass', chartAreaClass);
-
-        if (!bundleDetails || Object.keys(bundleDetails).length === 0) {
-            this.data.set('disabled', true);
+        if (modules) {
+            chartData = buildHierarchy(modules);
         }
+
+        const bundleDetails = getBundleDetails({
+            assets: this.data.get('assetsData'),
+            selectedAssetIndex
+        });
+
+        this.data.set('bundleDetails', bundleDetails);
+        this.data.set('chartData', chartData);
+        this.data.set('selectedAssetIndex', selectedAssetIndex);
     }
 };

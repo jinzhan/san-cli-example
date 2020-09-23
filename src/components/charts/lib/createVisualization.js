@@ -8,14 +8,14 @@ let vis;
 let totalSize;
 
 export default function createVisualization({svgElement, root, onHover, onUnhover}) {
-    let chartSize = (root.maxDepth > 9) ? 950 : 750;
-    let radius = Math.min(chartSize, chartSize) / 2;
+    const chartSize = (root.maxDepth > 9) ? 950 : 750;
+    const radius = Math.min(chartSize, chartSize) / 2;
 
-    let partition = d3.layout.partition()
+    const partition = d3.layout.partition()
         .size([2 * Math.PI, radius * radius])
         .value(d => d.size);
 
-    let arc = d3.svg.arc()
+    const arc = d3.svg.arc()
         .startAngle(d => d.x)
         .endAngle(d => d.x + d.dx)
         .innerRadius(d => Math.sqrt(d.y))
@@ -26,7 +26,7 @@ export default function createVisualization({svgElement, root, onHover, onUnhove
     }
 
     // Filter out very small nodes
-    let nodes = partition.nodes(root).filter(d => d.dx > 0.005);
+    const nodes = partition.nodes(root).filter(d => d.dx > 0.005);
 
     markDuplicates(nodes);
 
@@ -55,13 +55,13 @@ export default function createVisualization({svgElement, root, onHover, onUnhove
 
     totalSize = paths.node().__data__.value;
 
-    let svgWrapper = vis[0][0];
-    let chart = svgElement.parentNode;
+    const svgWrapper = vis[0][0];
+    const chart = svgElement.parentNode;
 
-    let visHeight = svgWrapper.getBoundingClientRect().height;
+    const visHeight = svgWrapper.getBoundingClientRect().height;
 
     // eslint-disable-next-line max-len
-    let topPadding = (svgWrapper.getBoundingClientRect().top + window.scrollY) - (d3.select(chart)[0][0].getBoundingClientRect().top + window.scrollY);
+    const topPadding = (svgWrapper.getBoundingClientRect().top + window.scrollY) - (d3.select(chart)[0][0].getBoundingClientRect().top + window.scrollY);
 
     d3.select(svgElement).attr('height', visHeight);
     vis.attr('transform', `translate(${chartSize / 2}, ${(chartSize / 2) - topPadding})`);

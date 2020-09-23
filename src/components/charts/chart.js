@@ -6,22 +6,26 @@ export default class App extends Component {
         <svg ref="svg" />
     `;
 
-    updated() {
-        this.createChart(this.data.get('data'));
+    attached() {
+        this.watch('data', data => {
+            this.createChart(data);
+        });
     }
 
     createChart(root) {
         if (!root) {
             return;
         }
-        this.details = createVisualization({
+
+        const visInfo = createVisualization({
             svgElement: this.el,
             root,
             onHover: this.onHover.bind(this),
             onUnhover: this.onUnhover.bind(this)
         });
 
-        this.fire('render', this.details);
+        this.fire('render', visInfo);
+        window.visInfo = visInfo;
     }
 
     onHover(data) {

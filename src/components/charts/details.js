@@ -4,14 +4,26 @@ import formatSize from './util/formatSize';
 
 export default class App extends Component {
     static template = /* html */ `
-    <div class="details" style="margin-top:-{{topMargin}}" s-if="title || bigText || sizeText">
+    <div class="details"
+         style="margin-top:-{{topMargin}}"
+         s-if="title || bigText || sizeText">
         <span class="details-name">{{title}}</span>
         <div class="details-percentage">{{bigText}}</div>
         <div class="details-size">{{sizeText}}</div>
     </div>
     `;
 
-    updated() {
+    attached() {
+        this.watch('bundleDetails', () => {
+            this.createData();
+        });
+
+        this.watch('details', () => {
+            this.createData();
+        });
+    }
+
+    createData() {
         const {
             title,
             bigText,

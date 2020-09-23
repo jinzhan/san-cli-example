@@ -17,7 +17,7 @@ export function getAssetsData(assets, chunks) {
 }
 
 
-export function getBundleDetails({assets, selectedAssetIndex}) {
+export function getBundleDetails({assets, chunks, selectedAssetIndex}) {
 
     if (selectedAssetIndex === 0) {
         if (assets.length === 1) {
