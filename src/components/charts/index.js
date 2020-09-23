@@ -40,6 +40,7 @@ export default class App extends Component {
 
     onChartHover(details) {
         this.data.set('hoverDetails', details);
+
         this.data.set('breadcrumbNodes', details.ancestorArray);
     }
 
@@ -60,8 +61,6 @@ export default class App extends Component {
         }
 
         this.data.set('chartAreaClass', chartAreaClass);
-       
-        console.log({chartData, bundleDetails, i: 2});
 
         if (!bundleDetails || Object.keys(bundleDetails).length === 0) {
             this.data.set('disabled', true);

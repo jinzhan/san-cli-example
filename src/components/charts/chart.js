@@ -24,8 +24,8 @@ export default class App extends Component {
         this.fire('render', this.details);
     }
 
-    onHover() {
-        this.fire('hover', this.details);
+    onHover(data) {
+        this.fire('hover', data);
     }
 
     onUnhover() {

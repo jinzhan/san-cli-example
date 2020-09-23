@@ -1,7 +1,3 @@
-
-export const ERROR_CHUNK_MODULES = `Unfortunately, it looks like your stats don't include chunk-specific module data. See below for details.`;
-
-
 export function getAssetsData(assets, chunks) {
     let chunksMap = {};
     chunks.forEach(chunk => {
@@ -21,7 +17,7 @@ export function getAssetsData(assets, chunks) {
 }
 
 
-export function getBundleDetails({assets, chunks, selectedAssetIndex}) {
+export function getBundleDetails({assets, selectedAssetIndex}) {
 
     if (selectedAssetIndex === 0) {
         if (assets.length === 1) {

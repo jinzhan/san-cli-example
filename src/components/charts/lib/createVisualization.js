@@ -98,6 +98,7 @@ function mouseover(object, callback) {
 
     let percentage = (100 * object.value / totalSize).toFixed(1);
     let percentageString = percentage + '%';
+
     if (percentage < 0.1) {
         percentageString = '< 0.1%';
     }
