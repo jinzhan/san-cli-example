@@ -2,8 +2,6 @@ import {Component} from 'san';
 import Chart from './chart';
 import ChartDetails from './details';
 import Breadcrumbs from './breadcrumbs';
-import './style.css';
-
 
 export default class App extends Component {
     static template = /* html */`
@@ -40,7 +38,6 @@ export default class App extends Component {
 
     onChartHover(details) {
         this.data.set('hoverDetails', details);
-
         this.data.set('breadcrumbNodes', details.ancestorArray);
     }
 

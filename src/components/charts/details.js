@@ -1,5 +1,5 @@
 import {Component} from 'san';
-import formatSize from './util/formatSize';
+import {formatSize} from './lib/utils';
 
 
 export default class App extends Component {

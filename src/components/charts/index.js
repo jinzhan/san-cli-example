@@ -1,8 +1,7 @@
 import {Component} from 'san';
 import ChartWithDetails from './chart-with-details';
 import buildHierarchy from './lib/buildHierarchy';
-import {getAssetsData, getBundleDetails} from './util/stat-utils';
-import formatSize from './util/formatSize';
+import {getAssetsData, getBundleDetails, formatSize} from './lib/utils';
 import './style.css';
 
 export default class App extends Component {

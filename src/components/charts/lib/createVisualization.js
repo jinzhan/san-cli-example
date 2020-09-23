@@ -1,6 +1,6 @@
 import d3 from 'd3';
 import {getColor} from './colors';
-import {markDuplicates, getAllChildren, getAncestors} from './partitionedDataUtils';
+import {markDuplicates, getAllChildren, getAncestors} from './utils';
 
 const FADE_OPACITY = 0.5;
 let paths;
@@ -29,7 +29,6 @@ export default function createVisualization({svgElement, root, onHover, onUnhove
     const nodes = partition.nodes(root).filter(d => d.dx > 0.005);
 
     markDuplicates(nodes);
-
 
     vis = d3.select(svgElement)
         .attr('width', chartSize)
@@ -67,7 +66,6 @@ export default function createVisualization({svgElement, root, onHover, onUnhove
     vis.attr('transform', `translate(${chartSize / 2}, ${(chartSize / 2) - topPadding})`);
     d3.select(chart.querySelector('.details')).style('margin-top', `${-topPadding}px`);
 
-
     d3.select(svgWrapper).on('mouseleave', object => {
         mouseleave(object, onUnhover);
     });
@@ -77,7 +75,6 @@ export default function createVisualization({svgElement, root, onHover, onUnhove
         vis
     };
 }
-
 
 function mouseover(object, callback) {
     let childrenArray = getAllChildren(object);
@@ -116,6 +113,5 @@ function mouseleave(object, callback) {
         'opacity': 1,
         'stroke-width': 1
     });
-
     callback();
 }

@@ -7,7 +7,7 @@ import {Component} from 'san';
 import Charts from '../components/charts/index';
 
 // import data from './data.json';
-import data from './test/stats-multiple.json';
+import data from '../../test/stats-multiple.json';
 
 export default class App extends Component {
 

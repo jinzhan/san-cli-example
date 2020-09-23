@@ -25,7 +25,6 @@ export default class App extends Component {
         });
 
         this.fire('render', visInfo);
-        window.visInfo = visInfo;
     }
 
     onHover(data) {
